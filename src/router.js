@@ -13,15 +13,23 @@ export default new Router({
       name: 'home',
       component: Home
     },
+    
     {
       path: '/anotacoes',
       name: 'anotacoes',
       component: () => import('./views/Anotacoes.vue')
     },
+    
     {
       path: '/Login',
       name: 'login',
       component: () => import('./views/Login.vue')
+    },
+
+    {
+      path: '/reserva',
+      name: 'reserva',
+      component: () => import('./views/Reserva.vue')
     }
   ]
 })

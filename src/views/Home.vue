@@ -19,10 +19,10 @@
                 <h5 class="card-title"> {{car.nome}} </h5>
                 <h6 class="card-subtitle mb-2 text-muted"> {{car.categoria}} </h6>
                 <hr>
-                <span class="card-text"> <b>Modelo: </b>  {{car.modelo}} </span> <br>
-                <span class="card-text">  <b>Ano: </b> {{car.ano}} </span><br>
-                <span class="card-text">  <b>Fabricante: </b> {{car.fabricante}} </span><br>
-                <span class="card-text">  <b>Cor: </b> {{car.cor}} </span><br>
+                <span class="card-text"> <b>Modelo: </b> {{car.modelo}} </span> <br>
+                <span class="card-text"> <b>Ano: </b> {{car.ano}} </span><br>
+                <span class="card-text"> <b>Fabricante: </b> {{car.fabricante}} </span><br>
+                <span class="card-text"> <b>Cor: </b> {{car.cor}} </span><br>
                 <hr>
                 <a href="#" class="card-link">Reservar</a>
               </div>
@@ -36,36 +36,42 @@
 
 
 <script>
-import axios from 'axios'
-import { mapState } from 'vuex'
+  import axios from 'axios'
+  import {
+    mapState
+  } from 'vuex'
 
-export default {
-  name: 'carros',
-  data() {
-    return {
-      carros: []
+  export default {
+    name: 'carros',
+    data() {
+      return {
+        carros: []
+      }
+    },
+    
+    computed: {
+      ...mapState([
+        'usuario'
+      ])
+    },
+    methods: {
+      atualizar() {
+        console.log('fazendo a requisição')
+        axios.get('/carro/getAll', {
+            headers: {
+              Accept: 'application/json'
+            }
+          })
+          .then(res => {
+            console.log(res)
+            this.carros = res.data
+          })
+          .catch(error => console.log(error))
+      }
+    },
+    created() {
+      console.log('chamando o chamador da requisição')
+      this.atualizar()
     }
-  },
-  computed: {
-    ...mapState([
-      'usuario'
-    ])
-  },
-  methods: {
-    atualizar () {
-      console.log('fazendo a requisição')
-      axios.get('/carro/getAll', 
-          { headers: { Accept: 'application/json' } })
-        .then(res => {
-          console.log(res)
-          this.carros = res.data
-        })
-        .catch(error => console.log(error))
-    }
-  },
-  created () {
-    console.log('chamando o chamador da requisição')
-    this.atualizar()
   }
-}
 </script>

@@ -4,8 +4,10 @@
       <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
         <h4 class="my-0 mr-md-auto font-weight-normal"> <i>Koyota</i></h4>
         <nav class="my-2 my-md-0 mr-md-3">
+
           <a href="#"><router-link class="p-2 text-dark" to="/">Home</router-link></a>
           <a  href="#"><router-link class="p-2 text-dark" to="/anotacoes">Anotações</router-link> </a>
+          <a  href="#"><router-link class="p-2 text-dark" to="/reserva">Reservas</router-link> </a>
           <a class="p-2 text-dark" href="#"><a class="p-2 text-dark" v-if="usuario" @click="logout">Logout</a> </a>
           <a class="p-2 text-dark" href="#"><router-link class="p-2 text-dark" v-if="!usuario" to="/login">Login</router-link></a>
         </nav>
