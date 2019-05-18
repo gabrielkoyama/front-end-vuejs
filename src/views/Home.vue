@@ -11,7 +11,7 @@
     </div>
     <hr class="mb-5">
     <div class="container">
-      <div class="row">
+      <div class="row offset-md-1">
         <div v-for="car in carros" :key="car.id">
           <div class="col-md-4 mt-5">
             <div class="card" style="width: 18rem;">
@@ -23,19 +23,49 @@
                 <span class="card-text">  <b>Ano: </b> {{car.ano}} </span><br>
                 <span class="card-text">  <b>Fabricante: </b> {{car.fabricante}} </span><br>
                 <span class="card-text">  <b>Cor: </b> {{car.cor}} </span><br>
+                <span class="card-text ini">  <b>Inicio: </b> <input type="date" class="form-control"> </span>
+                <span class="card-text fim">  <b>Fim: </b> <input type="date" class="form-control"> </span>
                 <hr>
-                <a href="#" class="card-link">Reservar</a>
+                <a class="card-link" style="cursor: pointer" :id="car.id" @click="reservar" >Reservar</a>
+
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                  Launch demo modal
+                </button> -->
+
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- Modal -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> -->
   </div>
 </template>
 
 
 <script>
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
 import axios from 'axios'
 import { mapState } from 'vuex'
 
@@ -53,19 +83,32 @@ export default {
   },
   methods: {
     atualizar () {
-      console.log('fazendo a requisição')
       axios.get('/carro/getAll', 
           { headers: { Accept: 'application/json' } })
         .then(res => {
-          console.log(res)
           this.carros = res.data
         })
         .catch(error => console.log(error))
+    },
+    reservar( e ) {
+
+      var data = {
+        usr_id: this.usuario.id,
+        car_id: e.target.getAttribute('id'),
+        data_ini: e.target.parentElement.children[11].children[1].value,
+        data_fim: e.target.parentElement.children[12].children[1].value 
+      }
+      axios.post('reserva/save',data )
+      .then(res => {
+        alert('CARRO RESERVADO COM SUCESSO!');
+        console.log(res)
+      })
+      .catch(error => console.log(error))
     }
   },
   created () {
-    console.log('chamando o chamador da requisição')
     this.atualizar()
+    
   }
 }
 </script>

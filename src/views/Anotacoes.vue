@@ -35,8 +35,6 @@
       </tr>
     </table>
   </div>
-  
-
 </template>
 
 <script>
@@ -73,7 +71,7 @@ export default {
         .catch(error => console.log(error))
     },
     atualizar () {
-      axios.get('/anotacao/getAll', 
+      axios.get('/anotacao/getAll',
           { headers: { Accept: 'application/json' } })
         .then(res => {
           console.log(res)
@@ -81,6 +79,9 @@ export default {
         })
         .catch(error => console.log(error))
     }
+  },
+  teste (){
+    alert('aaaa');
   },
   created () {
     this.atualizar()
