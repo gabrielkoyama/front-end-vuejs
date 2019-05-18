@@ -2,12 +2,10 @@
   <form @submit.prevent="login" class="form-group col-md-4 offset-md-4 p-5" style="background-color: #f7f7f7">
     <h2>Login</h2>
     <div class="form-group">
-      <label for="username">Usuário</label>
-      <input type="text" id="username" class="form-control" required autofocus v-model="nome">
+      <input type="text" id="username" class="form-control" placeholder="Usuario" required autofocus v-model="nome">
     </div>
     <div class="form-group">
-      <label for="inputPassword">Senha</label>
-      <input type="password" id="inputPassword" class="form-control" required v-model="senha">
+      <input type="password" id="inputPassword" class="form-control" placeholder="senha" required v-model="senha">
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Ok</button>
   </form>
@@ -25,11 +23,13 @@ export default {
       senha: ''
     }
   },
+  
   methods: {
     ...mapMutations([
       'setUsuario',
       'setToken'
     ]),
+
     login() {
       axios.post('login',
           {

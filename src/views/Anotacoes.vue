@@ -38,38 +38,53 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { mapState } from 'vuex'
+  import axios from 'axios'
+  import {
+    mapState
+  } from 'vuex'
 
-export default {
-  name: 'anotacoes',
-  data() {
-    return {
-      assunto: '',
-      texto: '',
-      anotacoes: []
-    }
-  },
-  computed: {
-    ...mapState([
-      'usuario'
-    ])
-  },
-  methods: {
-    cadastrar() {
-      axios.post('anotacao/save',
-          {
+  export default {
+    name: 'anotacoes',
+    data() {
+      return {
+        assunto: '',
+        texto: '',
+        anotacoes: []
+      }
+    },
+    computed: {
+      ...mapState([
+        'usuario'
+      ])
+    },
+    methods: {
+      cadastrar() {
+        axios.post('anotacao/save', {
             assunto: this.assunto,
             texto: this.texto,
             usuario: this.usuario
           })
-        .then(res => {
-          this.assunto = ''
-          this.texto = ''
-          this.atualizar()
-        })
-        .catch(error => console.log(error))
+          .then(res => {
+            this.assunto = ''
+            this.texto = ''
+            this.atualizar()
+          })
+          .catch(error => console.log(error))
+      },
+      atualizar() {
+        axios.get('/anotacao/getAll', {
+            headers: {
+              Accept: 'application/json'
+            }
+          })
+          .then(res => {
+            console.log(res)
+            this.anotacoes = res.data
+          })
+          .catch(error => console.log(error))
+      }
     },
+<<<<<<< HEAD
     atualizar () {
       axios.get('/anotacao/getAll',
           { headers: { Accept: 'application/json' } })
@@ -85,6 +100,10 @@ export default {
   },
   created () {
     this.atualizar()
+=======
+    created() {
+      this.atualizar()
+    }
+>>>>>>> 5c4ea852007f566f1493d558b21f91644214fba3
   }
-}
 </script>
