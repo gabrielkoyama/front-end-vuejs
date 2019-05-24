@@ -19,19 +19,12 @@
                 <h5 class="card-title"> {{car.nome}} </h5>
                 <h6 class="card-subtitle mb-2 text-muted"> {{car.categoria}} </h6>
                 <hr>
-<<<<<<< HEAD
                 <span class="card-text"> <b>Modelo: </b>  {{car.modelo}} </span> <br>
                 <span class="card-text">  <b>Ano: </b> {{car.ano}} </span><br>
                 <span class="card-text">  <b>Fabricante: </b> {{car.fabricante}} </span><br>
                 <span class="card-text">  <b>Cor: </b> {{car.cor}} </span><br>
                 <span class="card-text ini">  <b>Inicio: </b> <input type="date" class="form-control"> </span>
                 <span class="card-text fim">  <b>Fim: </b> <input type="date" class="form-control"> </span>
-=======
-                <span class="card-text"> <b>Modelo: </b> {{car.modelo}} </span> <br>
-                <span class="card-text"> <b>Ano: </b> {{car.ano}} </span><br>
-                <span class="card-text"> <b>Fabricante: </b> {{car.fabricante}} </span><br>
-                <span class="card-text"> <b>Cor: </b> {{car.cor}} </span><br>
->>>>>>> 5c4ea852007f566f1493d558b21f91644214fba3
                 <hr>
                 <a class="card-link" style="cursor: pointer" :id="car.id" @click="reservar" >Reservar</a>
 
@@ -84,32 +77,6 @@ import { mapState } from 'vuex'
       }
     },
     
-    computed: {
-      ...mapState([
-        'usuario'
-      ])
-    },
-    methods: {
-      atualizar() {
-        console.log('fazendo a requisição')
-        axios.get('/carro/getAll', {
-            headers: {
-              Accept: 'application/json'
-            }
-          })
-          .then(res => {
-            console.log(res)
-            this.carros = res.data
-          })
-          .catch(error => console.log(error))
-      }
-    },
-    created() {
-      console.log('chamando o chamador da requisição')
-      this.atualizar()
-    }
-<<<<<<< HEAD
-  },
   computed: {
     ...mapState([
       'usuario'
@@ -145,7 +112,4 @@ import { mapState } from 'vuex'
     
   }
 }
-=======
-  }
->>>>>>> 5c4ea852007f566f1493d558b21f91644214fba3
 </script>

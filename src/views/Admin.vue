@@ -46,6 +46,7 @@
 
     <hr class="mt-5 mb-5">
 
+    <!-- CARRO -->
     <div class="car1d">
 			<div class="card-body p-0">
 				<h5 class="card-title" style="margin: 10px 10px 0px 10px; padding: 0.65rem; ">
@@ -53,7 +54,7 @@
 						Carros
 					</span>
           <span class="float-right" style="font-size: 14px">
-            <a href="" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus fa-xs"></i> Novo carro</a>
+            <a href="" data-toggle="modal" data-target="#modal_carro"><i class="fas fa-plus fa-xs"></i> Novo carro</a>
           </span>
 				<div class="dropdown-divider"></div>
 				</h5>
@@ -93,6 +94,7 @@
 		</div>
     <hr class="mt-5 mb-5">
     
+    <!-- USUARIO -->
     <div class="car1d">
 			<div class="card-body p-0">
 				<h5 class="card-title" style="margin: 10px 10px 0px 10px; padding: 0.65rem; ">
@@ -100,7 +102,7 @@
 						Usuarios
 					</span>
           <span class="float-right" style="font-size: 14px">
-            <a href=""><i class="fas fa-plus fa-xs"></i> Novo usuario</a>
+            <a href="" data-toggle="modal" data-target="#modal_usuario"><i class="fas fa-plus fa-xs"></i> Novo usuario</a>
           </span>
 				<div class="dropdown-divider"></div>
 				</h5>
@@ -123,7 +125,7 @@
                 <td>{{usu.telefone}}</td>
                 <td>{{usu.autorizacoes.length}}</td>
                 <!-- <td> <a href=""> <i class="fas fa-edit fa-sm"></i> </a> </td> -->
-                <td> <a href=""> <i class="fas fa-trash fa-sm"></i> </a> </td>
+                <td> <a style="cursor: pointer" :id="usu.id" @click="deleteUsuarioById"> <i class="fas fa-trash fa-sm"></i> </a> </td>
               </tr>
             </tbody>
           </table>
@@ -133,6 +135,8 @@
 
     <hr class="mt-5 mb-5">
     
+    <!-- RESERVA -->
+
     <div class="car1d">
 			<div class="card-body p-0">
 				<h5 class="card-title" style="margin: 10px 10px 0px 10px; padding: 0.65rem; ">
@@ -180,8 +184,8 @@
 			</div>
 		</div>
 
-    <!-- MODAL -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- MODAL CARRO -->
+    <div class="modal fade" id="modal_carro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content" style="wid1th: 800px;">
           <div class="modal-header">
@@ -230,7 +234,53 @@
         </div>
       </div>
     </div>
+
+    <!-- MODAL USUARIO -->
+    <div class="modal fade" id="modal_usuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content" style="wid1th: 800px;">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Cadastrar Novo Usuario</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+            <form class="form" @submit.prevent="addUser">
+              <div class="modal-body">
+                <div class="form-group">
+                  <label>Nome</label>
+                  <input type="text" class="form-control" v-model="usr_nome">
+                </div>
+                <div class="form-group">
+                  <label>Senha</label>
+                  <input type="text" class="form-control" v-model="usr_psw">
+                </div>
+                <div class="form-group">
+                  <label>Cpf</label>
+                  <input type="text" class="form-control" v-model="usr_cpf">
+                </div>
+                <div class="form-group">
+                  <label>Telefone</label>
+                  <input type="text" class="form-control" v-model="usr_tel">
+                </div>
+                <div class="form-group">
+                  <label>Autorização</label>
+                  <select class="form-control" name="" id="" v-model="usr_aut" >
+                    <option value="ROLE_ADMIN">ADMIN</option>
+                    <option value="ROLE_USUARIO">USUARIO</option>
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-sm btn-primary">Cadastrar</button>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  
   </div>
+
 </template>
 
 <script>
@@ -245,6 +295,7 @@ export default {
   data() {
     return {
       
+      // carro
       car_nome: null,
       car_km: null,
       car_categoria:null,
@@ -255,6 +306,12 @@ export default {
       car_disponivel:null,
 
       
+      // usuario
+      usr_nome: null,
+      usr_cpf: null,
+      usr_tel:null,
+      usr_aut:null,
+      usr_psw:null,
 
       reservas: [],
       usuarios: [],
@@ -289,8 +346,28 @@ export default {
         })
         .catch(error => console.log(error))
     },
+    addUser(){
+      var autObject;
+      //mount autorization workaround
+      if(this.usr_aut == 'ROLE_ADMIN') autObject = [{id:1, nome:this.usr_aut, authority: this.usr_aut}]
+      if(this.usr_aut == 'ROLE_USUARIO') autObject = [{id:2, nome:this.usr_aut, authority: this.usr_aut}]
+      var data = {
+        nome: this.usr_nome,
+        senha: "{MD5}698dc19d489c4e4db73e28a713eab07b",
+        cpf: this.usr_cpf,
+        autorizacoes: autObject,
+        telefone: this.usr_tel
+      }
+      console.log(JSON.stringify(data));
+      axios.post('usuario/save', data )
+        .then(res => {
+          alert('USUARIO CADASTRADO COM SUCESSO');
+          this.atualizar()
+        })
+        .catch(error => console.log(error))
+    },
     async atualizar () {
-      console.log('CALLING CARRO GET ALL')
+      // console.log('CALLING CARRO GET ALL')
       await axios.get('/carro/getAll', 
           { headers: { Accept: 'application/json' } })
         .then( async res  => {
@@ -298,7 +375,7 @@ export default {
         })
         .catch(error => console.log(error))
       
-      console.log('CALLING RESERVA GET ALL')
+      // console.log('CALLING RESERVA GET ALL')
       await axios.get('/reserva/getAll', 
           { headers: { Accept: 'application/json' } })
         .then(res => {
@@ -306,7 +383,7 @@ export default {
         })
         .catch(error => console.log(error))
       
-      console.log('CALLING USUARIO GET ALL')
+      // console.log('CALLING USUARIO GET ALL')
       await axios.get('/usuario/getAll', 
           { headers: { Accept: 'application/json' } })
         .then(res => {
@@ -327,10 +404,23 @@ export default {
           { headers: { Accept: 'application/json' } })
         .then(res => {
           alert('DELETADO COM SUCESSO!');
-          window.reload()
+          this.atualizar()
           console.log('res');
         })
         .catch(error => console.log(error))
+    },
+    deleteUsuarioById( e ){
+    var id = e.target.parentElement.getAttribute('id');
+    console.log(id)
+    axios.delete('/usuario/deleteById/' + id,
+        { headers: { Accept: 'application/json' } })
+      .then(res => {
+        alert('DELETADO COM SUCESSO!');
+        // location.reload();
+        this.atualizar()
+        console.log('res');
+      })
+      .catch(error => console.log(error))
     }
   },
   created () {

@@ -84,26 +84,8 @@
           .catch(error => console.log(error))
       }
     },
-<<<<<<< HEAD
-    atualizar () {
-      axios.get('/anotacao/getAll',
-          { headers: { Accept: 'application/json' } })
-        .then(res => {
-          console.log(res)
-          this.anotacoes = res.data
-        })
-        .catch(error => console.log(error))
-    }
-  },
-  teste (){
-    alert('aaaa');
-  },
   created () {
     this.atualizar()
-=======
-    created() {
-      this.atualizar()
-    }
->>>>>>> 5c4ea852007f566f1493d558b21f91644214fba3
+  }
   }
 </script>
