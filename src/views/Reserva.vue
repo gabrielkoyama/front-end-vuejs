@@ -9,8 +9,7 @@
         <h3>Reserva atual</h3>
         <p>Sua reserva atual: </p>
 
-        <h1> {{usuario}} </h1>
-          <!-- <table class="table table-stripped mt-2 carros">
+          <table class="table table-stripped mt-2 reservas_usr">
             <thead>
               <tr>
                 <th>Nome do carro</th>
@@ -20,14 +19,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="res in reserva_at" :key="res.id">
-                <td>{{}}</td>
-                <td>{{}}</td>
-                <td>{{}}</td>
-                <td>{{}}</td>
+              <tr v-for="res in reserva_atual" :key="res.id">
+                <td>{{ res.carro.nome}}</td>
+                <td>{{ res.carro.modelo}}</td>
+                <td>{{ res.data_ini}}</td>
+                <td>{{ res.data_fim}}</td>
               </tr>
             </tbody>
-          </table> -->
+          </table>
+
         </div>
 
         <div class="dropdown-divider mt-5"></div>
@@ -38,9 +38,11 @@
           <h3>Historico de reservas</h3>
           <p>Seu historico de reservas passadas:</p>
           
+          <!-- <span class="p-2"> {{reserva}} </span> -->
+
           <!-- <h1> {{ reserva.carro.nome }} </h1> -->
 
-          <!-- <table class="table table-stripped mt-2 carros">
+          <table class="table table-stripped mt-2 reservas_usr">
             <thead>
               <tr>
                 <th>Nome do carro</th>
@@ -50,14 +52,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="res in reserva" :key="res.id">
+              <tr v-for="res in reserva_hist" :key="res.id">
                 <td>{{ res.carro.nome}}</td>
                 <td>{{ res.carro.modelo}}</td>
                 <td>{{ res.data_ini}}</td>
                 <td>{{ res.data_fim}}</td>
               </tr>
             </tbody>
-          </table> -->
+          </table>
           
         </div>
       </div>
@@ -75,6 +77,8 @@
     data() {
       return {
         reserva: [],
+        reserva_atual: [],
+        reserva_hist: []
       }
     },
 
@@ -87,17 +91,24 @@
     methods: {
       async atualizar(){
 
-        console.log('/reserva/getById/' + this.usuario.id)
-      //   axios.get('/reserva/getById/' + this.usuario.id,
-      //     { headers: { Accept: 'application/json' } })
-      //   .then(res => {
-      //     this.reserva = res.data
-      //     console.log(res.data)
-      //   })
-      //   .catch(error => console.log(error))        
+        var hj = new Date()
+
+        await axios.get('/reserva/getAll/',
+          { headers: { Accept: 'application/json' } })
+        .then(res => {
+          res.data.filter(( e )=> { return e.usuario.id == this.usuario.id ? this.reserva.push(e) : console.log(''); });
+        })
+        .catch(error => console.log(error))
+
+        //calculo da reserva atual
+        await this.reserva.map((el) => {
+          if(new Date(el.data_fim) > hj) this.reserva_atual.push(el)
+          else this.reserva_hist.push(el)
+        })
+        $('.reservas_usr').DataTable();
+        $('.reservas_usr_atual').DataTable();
       }
     },
-
     created() {
       this.atualizar();
     }
