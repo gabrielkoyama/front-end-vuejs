@@ -27,37 +27,12 @@
                 <span class="card-text fim">  <b>Fim: </b> <input type="date" class="form-control"> </span>
                 <hr>
                 <a class="card-link" style="cursor: pointer" :id="car.id" @click="reservar" >Reservar</a>
-
-                <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                  Launch demo modal
-                </button> -->
-
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Modal -->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div> -->
   </div>
 </template>
 
@@ -91,20 +66,48 @@ import { mapState } from 'vuex'
         })
         .catch(error => console.log(error))
     },
-    reservar( e ) {
+    async reservar( e ) {
 
-      var data = {
-        usr_id: this.usuario.id,
-        car_id: e.target.getAttribute('id'),
-        data_ini: e.target.parentElement.children[11].children[1].value,
-        data_fim: e.target.parentElement.children[12].children[1].value 
+      var car;
+      var usu;
+
+      if(e.target.parentElement.children[11].children[1].value == "" || e.target.parentElement.children[12].children[1].value == "") alert("Por favor, escolha a data de inicio e fim da reserva");
+      else{
+
+        // calling object Usuario
+        console.log('usuario/getById/' + this.usuario.id)
+        await axios.get('usuario/getById/' + this.usuario.id)
+          .then (res => {
+            usu = res.data;
+            // console.log('usuario:' + JSON.stringify(res.data))
+          })
+          .catch(error => {
+            console.log(error)
+          })
+
+        await axios.get('carro/getById/' + e.target.getAttribute('id'))
+          .then (res => {
+            car = res.data
+            // console.log("carro" + JSON.stringify(res.data))
+          })
+          .catch(error => {
+            console.log(error)
+          })
+
+        var data = {
+          usuario: usu,
+          carro: car,
+          data_ini: e.target.parentElement.children[11].children[1].value,
+          data_fim: e.target.parentElement.children[12].children[1].value 
+        }
+
+        axios.post('reserva/save',data )
+        .then(res => {
+          alert('CARRO RESERVADO COM SUCESSO!');
+          console.log(res.data)
+        })
+        .catch(error => console.log(error))
       }
-      axios.post('reserva/save',data )
-      .then(res => {
-        alert('CARRO RESERVADO COM SUCESSO!');
-        console.log(res)
-      })
-      .catch(error => console.log(error))
     }
   },
   created () {

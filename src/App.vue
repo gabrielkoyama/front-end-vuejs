@@ -6,7 +6,14 @@
         <nav class="my-2 my-md-0 mr-md-3">
 
           <a href="#"><router-link class="p-2 text-dark" to="/">Home</router-link></a>
-          <a  v-if="usuario" href="#"><router-link class="p-2 text-dark" to="/admin">Admin</router-link> </a>
+
+          <!-- <a  v-if="usuario.autorizacoes" href="#"><router-link class="p-2 text-dark" to="/admin">Admin </router-link> </a>
+          <a  v-else-if="usuario.autorizacoes[0].nome == 'ROLE_ADMIN'" href="#"><router-link class="p-2 text-dark" to="/admin">Admin </router-link> </a>
+          <a  v-else href="#"><router-link class="p-2 text-dark" to="/reserva">Reserva </router-link> </a> -->
+          
+          <a  v-if="usuario" href="#"><router-link class="p-2 text-dark" to="/admin">Admin </router-link> </a>
+          <a  v-if="usuario" href="#"><router-link class="p-2 text-dark" to="/reserva">Reserva </router-link> </a>
+
           <a class="p-2 text-dark" href="#"><router-link class="p-2 text-dark" v-if="!usuario" to="/login">Login</router-link></a>
           <a class="p-2 text-dark" href="#"><a class="p-2 text-dark" v-if="usuario" @click="logout">Logout</a> </a>
         </nav>

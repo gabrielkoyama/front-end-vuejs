@@ -9,10 +9,9 @@
               <div class="card-body">
                 <p class="card-title text-md-center text-xl-left">USUARIOS</p>
                 <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                  <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">2</h3>
+                  <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">{{usuarios.length}}</h3>
                   <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                 </div>  
-                <!-- <p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ml-1"><small>(30 days)</small></span></p> -->
               </div>
             </div>
           </div>
@@ -21,7 +20,7 @@
               <div class="card-body">
                 <p class="card-title text-md-center text-xl-left">Carros</p>
                 <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                  <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">3</h3>
+                  <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">{{carros.length}}</h3>
                   <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                 </div>  
                 <!-- <p class="mb-0 mt-2 text-danger">0.47% <span class="text-black ml-1"><small>(30 days)</small></span></p> -->
@@ -33,7 +32,7 @@
               <div class="card-body">
                 <p class="card-title text-md-center text-xl-left">Reservas</p>
                 <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                  <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">400</h3>
+                  <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">{{reservas.length}}</h3>
                   <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                 </div>  
                 <!-- <p class="mb-0 mt-2 text-success">64.00%<span class="text-black ml-1"><small>(30 days)</small></span></p> -->
@@ -125,7 +124,7 @@
                 <td>{{usu.telefone}}</td>
                 <td>{{usu.autorizacoes.length}}</td>
                 <!-- <td> <a href=""> <i class="fas fa-edit fa-sm"></i> </a> </td> -->
-                <td> <a style="cursor: pointer" :id="usu.id" @click="deleteUsuarioById"> <i class="fas fa-trash fa-sm"></i> </a> </td>
+                <td> <a style="cursor: pointer" :id="usu.id" @click="deleteUsuarioById"> <i class="fas fa-trash fa-sm" style="color: red"></i> </a> </td>
               </tr>
             </tbody>
           </table>
@@ -136,16 +135,13 @@
     <hr class="mt-5 mb-5">
     
     <!-- RESERVA -->
-
     <div class="car1d">
 			<div class="card-body p-0">
 				<h5 class="card-title" style="margin: 10px 10px 0px 10px; padding: 0.65rem; ">
 					<span>
 						Reservas
 					</span>
-          <span class="float-right" style="font-size: 14px">
-            <a href=""><i class="fas fa-plus fa-xs"></i> Novo carro</a>
-          </span>
+          
 				<div class="dropdown-divider"></div>
 				</h5>
         <div class="container">
@@ -153,29 +149,25 @@
             <thead>
               <tr>
                 <th> Nome </th>
-                <th> Km </th>
-                <th> Categoria </th>
+                <th> Cpf </th>
+                <th> Teelfone </th>
+                <th> Carro </th>
                 <th> Modelo </th>
-                <th> Ano </th>
-                <th> Fabricante </th>
-                <th> Cor </th>
-                <th> Disponivel </th>
-                <!-- <th></th> -->
+                <th> Data Inicio </th>
+                <th> Data Fim </th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <td>a</td>
-                <!-- <td> <a href=""> <i class="fas fa-edit fa-sm"></i> </a> </td> -->
-                <td> <a href=""> <i class="fas fa-trash fa-sm"></i> </a> </td>
+              <tr v-for="rsv in reservas" :key="rsv.id">
+                <td>{{rsv.usuario.nome}}</td>
+                <td>{{rsv.usuario.cpf}}</td>
+                <td>{{rsv.usuario.telefone}}</td>
+                <td>{{rsv.carro.nome}}</td>
+                <td>{{rsv.carro.modelo}}</td>
+                <td>{{rsv.data_ini}}</td>
+                <td>{{rsv.data_fim}}</td>
+                <td> <a style="cursor: pointer" :id="rsv.id" @click="deleteReservaById"> <i class="fas fa-trash fa-sm" style="color: red"></i> </a> </td>
               </tr>
               
             </tbody>
@@ -289,6 +281,7 @@ import axios from 'axios'
 import { mapState } from 'vuex'
 
 var global = 0;
+var teste;
 
 export default {
   name: 'admin',
@@ -305,7 +298,6 @@ export default {
       car_cor:null,
       car_disponivel:null,
 
-      
       // usuario
       usr_nome: null,
       usr_cpf: null,
@@ -324,6 +316,40 @@ export default {
     ])
   },
   methods: {
+    async atualizar () {
+      // console.log('CALLING CARRO GET ALL')
+      await axios.get('/carro/getAll', 
+          { headers: { Accept: 'application/json' } })
+        .then( async res  => {
+          this.carros = res.data;
+        })
+        .catch(error => console.log(error))
+      
+      // console.log('CALLING USUARIO GET ALL')
+      await axios.get('/usuario/getAll', 
+          { headers: { Accept: 'application/json' } })
+        .then(res => {
+         console.log(res.data.au)
+          this.usuarios = res.data
+          teste = res.data
+        })
+        .catch(error => console.log(error))
+      
+      // console.log('CALLING RESERVA GET ALL')
+      await axios.get('/reserva/getAll', 
+          { headers: { Accept: 'application/json' } })
+        .then(res => {
+          console.log(res.data)
+          this.reservas = res.data
+        })
+        .catch(error => console.log(error))
+      
+
+      // espera os 'ajax' rodarem pra depois montar a table
+      $('.carros').DataTable();
+      $('.usuarios').DataTable();
+      $('.reservas').DataTable();
+    },
     addCar() {
 
       var data = {
@@ -366,37 +392,6 @@ export default {
         })
         .catch(error => console.log(error))
     },
-    async atualizar () {
-      // console.log('CALLING CARRO GET ALL')
-      await axios.get('/carro/getAll', 
-          { headers: { Accept: 'application/json' } })
-        .then( async res  => {
-          this.carros = res.data;
-        })
-        .catch(error => console.log(error))
-      
-      // console.log('CALLING RESERVA GET ALL')
-      await axios.get('/reserva/getAll', 
-          { headers: { Accept: 'application/json' } })
-        .then(res => {
-          this.reservas = res.data
-        })
-        .catch(error => console.log(error))
-      
-      // console.log('CALLING USUARIO GET ALL')
-      await axios.get('/usuario/getAll', 
-          { headers: { Accept: 'application/json' } })
-        .then(res => {
-         console.log(res.data.au)
-          this.usuarios = res.data
-        })
-        .catch(error => console.log(error))
-
-      // espera os 'ajax' rodarem pra depois montar a table
-      $('.carros').DataTable();
-      $('.reservas').DataTable();
-      $('.usuarios').DataTable();
-    },
     deleteCarById ( e ) {
       var id = e.target.parentElement.getAttribute('id')
       console.log(id)
@@ -410,17 +405,28 @@ export default {
         .catch(error => console.log(error))
     },
     deleteUsuarioById( e ){
-    var id = e.target.parentElement.getAttribute('id');
-    console.log(id)
-    axios.delete('/usuario/deleteById/' + id,
-        { headers: { Accept: 'application/json' } })
-      .then(res => {
-        alert('DELETADO COM SUCESSO!');
-        // location.reload();
-        this.atualizar()
-        console.log('res');
-      })
-      .catch(error => console.log(error))
+      var id = e.target.parentElement.getAttribute('id');
+      console.log(id)
+      axios.delete('/usuario/deleteById/' + id,
+          { headers: { Accept: 'application/json' } })
+        .then(res => {
+          alert('DELETADO COM SUCESSO!');
+          this.atualizar()
+          console.log('res');
+        })
+        .catch(error => console.log(error))
+    },
+    deleteReservaById( e ){
+      var id = e.target.parentElement.getAttribute('id');
+      console.log(id)
+      axios.delete('/reserva/deleteById/' + id,
+          { headers: { Accept: 'application/json' } })
+        .then(res => {
+          alert('DELETADO COM SUCESSO!');
+          this.atualizar()
+          console.log('res');
+        })
+        .catch(error => console.log(error))
     }
   },
   created () {
