@@ -35,6 +35,12 @@ export default new Router({
       path: '/reserva',
       name: 'reserva',
       component: () => import('./views/Reserva.vue')
+    },
+
+    {
+      path: '/teste',
+      name: 'teste',
+      component: () => import('./views/teste.vue')
     }
   ]
 })

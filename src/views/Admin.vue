@@ -35,7 +35,6 @@
                   <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">{{reservas.length}}</h3>
                   <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
                 </div>  
-                <!-- <p class="mb-0 mt-2 text-success">64.00%<span class="text-black ml-1"><small>(30 days)</small></span></p> -->
               </div>
             </div>
           </div>
