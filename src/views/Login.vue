@@ -1,14 +1,22 @@
 <template>
-  <form @submit.prevent="login" class="form-group col-md-4 offset-md-4 p-5" style="background-color: #f7f7f7">
-    <h2>Login</h2>
-    <div class="form-group">
-      <input type="text" id="username" class="form-control" placeholder="Usuario" required autofocus v-model="nome">
+  <div class="row container col s6" style="margin-top: 50px">
+    <div class="card-panel col s6 offset-s3">
+      <form @submit.prevent="login" class="col s12">
+        <h3 class="header center">Login</h3>
+        <div class="input-field col s12">
+          <input id="username" type="text" v-model="nome">
+          <label for="username">Usuario</label>
+        </div>
+        <div class="input-field col s12">
+          <input id="password" type="password" v-model="senha">
+          <label for="password">Senha</label>
+          <center>
+            <button type="submit" class="waves-effect waves-light btn" style="margin: 30px">Entrar</button>
+          </center>
+        </div>
+      </form>
     </div>
-    <div class="form-group">
-      <input type="password" id="inputPassword" class="form-control" placeholder="senha" required v-model="senha">
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Ok</button>
-  </form>
+  </div>
 </template>
 
 <script>
