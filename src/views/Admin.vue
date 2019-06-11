@@ -1,118 +1,100 @@
 <template>
-  <div class="m-5" style="border-radius: 10px" id="">
 
-    <samp> Visão Geral</samp>
-
-    <div class="row offset-md-2">
-          <div class="col-md-3 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <p class="card-title text-md-center text-xl-left">USUARIOS</p>
-                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                  <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">{{usuarios.length}}</h3>
-                  <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                </div>  
-              </div>
-            </div>
+  <div class="m-5" style="border-radius: 10px; background-color: #ccc" id="">
+    <nav style="background-color: black">
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">
+          <img src="assets/img/koyata-only.png" width="180px" style="margin-left: 50px !important">
+        </a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><router-link to="/" class="nav-item">Página Inicial</router-link></li>
+          <li><router-link to="/admin" class="nav-item">Admin</router-link></li>
+          <li><router-link to="/reserva" class="nav-item">Reserva</router-link></li>
+          <li><a v-if="!usuario"><router-link to="/login" class="nav-item">Login</router-link></a></li>
+          <li><a v-if="usuario" @click="logout" class="nav-item">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+    <h5 class="header center"> Visão Geral</h5>
+    <div class="row container">
+      <div class="col s12 m4">
+        <div class="card hoverable">
+          <div class="card-content">
+            <span class="card-title">
+              Usuarios
+              <i class="material-icons">group</i>
+            </span>
+            <p> {{usuarios.length}} </p>            
           </div>
-          <div class="col-md-3 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <p class="card-title text-md-center text-xl-left">Carros</p>
-                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                  <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">{{carros.length}}</h3>
-                  <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                </div>  
-                <!-- <p class="mb-0 mt-2 text-danger">0.47% <span class="text-black ml-1"><small>(30 days)</small></span></p> -->
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <p class="card-title text-md-center text-xl-left">Reservas</p>
-                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                  <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0 pb-3">{{reservas.length}}</h3>
-                  <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                </div>  
-              </div>
-            </div>
-          </div>
-        
         </div>
+      </div>
 
+      <div class="col s12 m4">
+        <div class="card hoverable">
+          <div class="card-content">
+            <span class="card-title">Carros <i class="material-icons">directions_car</i></span>
+            <p> {{carros.length}} </p>            
+          </div>
+        </div>
+      </div>
 
-    <hr class="mt-5 mb-5">
+      <div class="col s12 m4">
+        <div class="card hoverable">
+          <div class="card-content">
+            <span class="card-title">Reservas <i class="material-icons">insert_emoticon</i></span>
+            <p> {{reservas.length}} </p>            
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- CARRO -->
-    <div class="car1d">
-			<div class="card-body p-0">
-				<h5 class="card-title" style="margin: 10px 10px 0px 10px; padding: 0.65rem; ">
-					<span>
-						Carros
-					</span>
-          <span class="float-right" style="font-size: 14px">
-            <a href="" data-toggle="modal" data-target="#modal_carro"><i class="fas fa-plus fa-xs"></i> Novo carro</a>
-          </span>
-				<div class="dropdown-divider"></div>
-				</h5>
-        <div class="container">
-					<table class="table table-stripped mt-2 carros">
-            <thead>
-              <tr>
-                <th> Nome </th>
-                <th> Km </th>
-                <th> Categoria </th>
-                <th> Modelo </th>
-                <th> Ano </th>
-                <th> Fabricante </th>
-                <th> Cor </th>
-                <th> Disponivel </th>
-                <!-- <th></th> -->
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="car in carros" :key="car.id">
-                <td>{{car.nome}}</td>
-                <td>{{car.km}}</td>
-                <td>{{car.categoria}}</td>
-                <td>{{car.modelo}}</td>
-                <td>{{car.ano}}</td>
-                <td>{{car.fabricante}}</td>
-                <td>{{car.cor}}</td>
-                <td>{{car.disponivel}}</td>
-                <!-- <td> <a style="cursor: pointer"> <i class="fas fa-edit fa-sm"></i> </a> </td> -->
-                <td> <a style="cursor: pointer" :id="car.id" @click="deleteCarById"> <i class="fas fa-trash fa-sm" style="color: red"></i> </a> </td>
-              </tr>
-            </tbody>
+    <h5 class="header center space"> Carros </h5>
+    <div class="container">
+      <div class="card hoverable">
+          <div class="card-content">
+            <table class="table striped highlight">
+              <thead>
+                <tr>
+                  <th> Nome </th>
+                  <th> Km </th>
+                  <th> Categoria </th>
+                  <th> Modelo </th>
+                  <th> Ano </th>
+                  <th> Fabricante </th>
+                  <th> Cor </th>
+                  <th> Disponivel </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="car in carros" :key="car.id">
+                  <td>{{car.nome}}</td>
+                  <td>{{car.km}}</td>
+                  <td>{{car.categoria}}</td>
+                  <td>{{car.modelo}}</td>
+                  <td>{{car.ano}}</td>
+                  <td>{{car.fabricante}}</td>
+                  <td>{{car.cor}}</td>
+                  <td>{{car.disponivel}}</td>
+                  <td> <a style="cursor: pointer" :id="car.id" @click="deleteCarById"> <i class="material-icons" style="color: red">delete_forever</i> </a> </td>
+                </tr>
+              </tbody>
           </table>
-        </div>
-			</div>
-		</div>
-    <hr class="mt-5 mb-5">
+          </div>
+      </div>
+    </div>
     
-    <!-- USUARIO -->
-    <div class="car1d">
-			<div class="card-body p-0">
-				<h5 class="card-title" style="margin: 10px 10px 0px 10px; padding: 0.65rem; ">
-					<span>
-						Usuarios
-					</span>
-          <span class="float-right" style="font-size: 14px">
-            <a href="" data-toggle="modal" data-target="#modal_usuario"><i class="fas fa-plus fa-xs"></i> Novo usuario</a>
-          </span>
-				<div class="dropdown-divider"></div>
-				</h5>
-        <div class="container">
-					<table class="table table-stripped mt-2 usuarios">
+    <h5 class="header center space"> Usuários </h5>
+    <div class="container">
+    <div class="card hoverable">
+        <div class="card-content">
+          <table class="table striped highlight">
             <thead>
               <tr>
                 <th> Nome </th>
                 <th> Cpf </th>
                 <th> Telefone </th>
                 <th> Autorização </th>
-                <!-- <th></th> -->
                 <th></th>
               </tr>
             </thead>
@@ -122,29 +104,20 @@
                 <td>{{usu.cpf}}</td>
                 <td>{{usu.telefone}}</td>
                 <td>{{usu.autorizacoes.length}}</td>
-                <!-- <td> <a href=""> <i class="fas fa-edit fa-sm"></i> </a> </td> -->
-                <td> <a style="cursor: pointer" :id="usu.id" @click="deleteUsuarioById"> <i class="fas fa-trash fa-sm" style="color: red"></i> </a> </td>
+                <td> <a style="cursor: pointer" :id="usu.id" @click="deleteUsuarioById"> <i class="material-icons" style="color: red">delete_forever</i></a> </td>
               </tr>
             </tbody>
           </table>
         </div>
-			</div>
-		</div>
+    </div>
+  </div>
 
-    <hr class="mt-5 mb-5">
-    
-    <!-- RESERVA -->
-    <div class="car1d">
-			<div class="card-body p-0">
-				<h5 class="card-title" style="margin: 10px 10px 0px 10px; padding: 0.65rem; ">
-					<span>
-						Reservas
-					</span>
-          
-				<div class="dropdown-divider"></div>
-				</h5>
-        <div class="container">
-					<table class="table table-stripped mt-2 carros">
+
+  <h5 class="header center space"> Reservas </h5>
+  <div class="container" style="padding-bottom: 50px">
+    <div class="card hoverable">
+        <div class="card-content">
+          <table class="table striped highlight">
             <thead>
               <tr>
                 <th> Nome </th>
@@ -166,67 +139,110 @@
                 <td>{{rsv.carro.modelo}}</td>
                 <td>{{rsv.data_ini}}</td>
                 <td>{{rsv.data_fim}}</td>
-                <td> <a style="cursor: pointer" :id="rsv.id" @click="deleteReservaById"> <i class="fas fa-trash fa-sm" style="color: red"></i> </a> </td>
+                <td> <a style="cursor: pointer" :id="rsv.id" @click="deleteReservaById"><i class="material-icons" style="color: red">delete_forever</i> </a> </td>
               </tr>
-              
             </tbody>
           </table>
         </div>
-			</div>
-		</div>
-
-    <!-- MODAL CARRO -->
-    <div class="modal fade" id="modal_carro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content" style="wid1th: 800px;">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Cadastrar Novo Carro</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-            <form class="form" @submit.prevent="addCar">
-              <div class="modal-body">
-                <div class="form-group">
-                  <label>Nome</label>
-                  <input type="text" class="form-control" v-model="car_nome">
-                </div>
-                <div class="form-group">
-                  <label>Categoria</label>
-                  <input type="text" class="form-control" v-model="car_km">
-                </div>
-                <div class="form-group">
-                  <label>Km</label>
-                  <input type="text" class="form-control" v-model="car_categoria">
-                </div>
-                <div class="form-group">
-                  <label >Modelo</label>
-                  <input type="text" class="form-control" v-model="car_modelo">
-                </div>
-                <div class="form-group">
-                  <label >Ano</label>
-                  <input type="text" class="form-control" v-model="car_ano" >
-                </div>
-
-                <div class="form-group">
-                  <label >Fabricante</label>
-                  <input type="text" class="form-control" v-model="car_fabricante" >
-                </div>
-
-                <div class="form-group">
-                  <label >Cor</label>
-                  <input type="text" class="form-control" v-model="car_cor" >
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-sm btn-primary">Save changes</button>
-              </div>
-            </form>
-        </div>
-      </div>
     </div>
+  </div>
 
-    <!-- MODAL USUARIO -->
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-large black">
+      <i class="large material-icons">add</i>
+    </a>
+    <ul>
+      <li><a href="#new_car" class="btn-floating red modal-trigger"><i class="material-icons tooltipped" data-position="left" data-tooltip="Novo usuário">group</i></a></li>
+      <li><a href="#new_usr" class="btn-floating yellow darken-1 modal-trigger"><i class="material-icons tooltipped" data-position="left" data-tooltip="Novo carro">directions_car</i></a></li>
+    </ul>
+  </div>
+
+  <div id="new_car" class="modal">
+    <div class="modal-content">
+      <h5 class="header center">Cadastrar Novo Carro</h5>
+      
+      <form class="form" @submit.prevent="addCar">
+
+        <div class="input-field col s12">
+          <input id="username" type="text" v-model="car_nome">
+          <label for="username">Nome</label>
+        </div>
+
+        <div class="input-field col s12">
+          <input id="username" type="text" v-model="car_categoria">
+          <label for="username">Categoria</label>
+        </div>
+
+        <div class="input-field col s12">
+          <input id="username" type="text" v-model="car_km">
+          <label for="username">Km</label>
+        </div>
+
+        <div class="input-field col s12">
+          <input id="username" type="text" v-model="car_modelo">
+          <label for="username">Modelo</label>
+        </div>
+
+        <div class="input-field col s12">
+          <input id="username" type="text" v-model="car_ano">
+          <label for="username">Ano</label>
+        </div>
+
+        <div class="input-field col s12">
+          <input id="username" type="text" v-model="car_fabricante">
+          <label for="username">Fabricante</label>
+        </div>
+
+        <div class="input-field col s12">
+          <input id="username" type="text" v-model="car_cor">
+          <label for="username">Cor</label>
+        </div>
+        <button type="submit" style="float: right" class="modal-close waves-effect waves-green btn-flat">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="new_usr" class="modal">
+    <div class="modal-content">
+      <h5 class="header center">Cadastrar novo usuário</h5>
+        <form class="form" @submit.prevent="addUser">
+
+          <div class="input-field col s12">
+            <input id="username" type="text" v-model="usr_nome">
+            <label for="username">Nome</label>
+          </div>
+
+          <div class="input-field col s12">
+            <input id="username" type="text" v-model="usr_psw">
+            <label for="username">Senha</label>
+          </div>
+
+          <div class="input-field col s12">
+            <input id="username" type="text" v-model="usr_cpf">
+            <label for="username">Cpf</label>
+          </div>
+
+          <div class="input-field col s12">
+            <input id="username" type="text" v-model="usr_tel">
+            <label for="username">Telefone</label>
+          </div>
+
+          <div class="input-field col s12">
+            <select v-model="usr_aut">
+              <option value="" disabled selected>Choose your user role</option>
+              <option value="ROLE_ADMIN">ADMIN</option>
+              <option value="ROLE_USUARIO">USUARIO</option>
+            </select>
+          </div>
+          <button type="submit" style="float: right" class="modal-close waves-effect waves-green btn-medium btn-flat">Cadastrar</button>
+        </form>
+    </div>
+  </div>
+
+  <a hidden id="success_del" onclick="M.toast({html: 'Deletado com sucesso!'})"></a>
+  <a hidden id="success_add" onclick="M.toast({html: 'Cadastrado com sucesso!'})"></a>
+    
+   
     <div class="modal fade" id="modal_usuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content" style="wid1th: 800px;">
@@ -269,15 +285,31 @@
         </div>
       </div>
     </div>
-  
   </div>
-
 </template>
+
+<style>
+
+  .space {
+    padding: 20px;
+  }
+
+</style>
+
 
 <script>
 
+$(document).ready(function(){
+  $('.fixed-action-btn').floatingActionButton();
+  $('.tooltipped').tooltip();
+  $('.modal').modal();
+  $('select').formSelect();
+})
+
 import axios from 'axios'
 import { mapState } from 'vuex'
+import { mapMutations } from 'vuex'
+
 
 var global = 0;
 var teste;
@@ -315,16 +347,17 @@ export default {
     ])
   },
   methods: {
+    ...mapMutations([
+      'logout'
+    ]),
     async atualizar () {
-      // console.log('CALLING CARRO GET ALL')
       await axios.get('/carro/getAll', 
           { headers: { Accept: 'application/json' } })
         .then( async res  => {
           this.carros = res.data;
         })
         .catch(error => console.log(error))
-      
-      // console.log('CALLING USUARIO GET ALL')
+
       await axios.get('/usuario/getAll', 
           { headers: { Accept: 'application/json' } })
         .then(res => {
@@ -334,7 +367,6 @@ export default {
         })
         .catch(error => console.log(error))
       
-      // console.log('CALLING RESERVA GET ALL')
       await axios.get('/reserva/getAll', 
           { headers: { Accept: 'application/json' } })
         .then(res => {
@@ -343,11 +375,9 @@ export default {
         })
         .catch(error => console.log(error))
       
-
-      // espera os 'ajax' rodarem pra depois montar a table
-      $('.carros').DataTable();
-      $('.usuarios').DataTable();
-      $('.reservas').DataTable();
+      // $('.carros').DataTable();
+      // $('.usuarios').DataTable();
+      // $('.reservas').DataTable();
     },
     addCar() {
 
@@ -366,7 +396,8 @@ export default {
 
       axios.post('carro/save', data )
         .then(res => {
-          alert('CARRO CADASTRADO COM SUCESSO');
+          // alert('CARRO CADASTRADO COM SUCESSO');
+          $('#success_add').click()
           this.atualizar()
         })
         .catch(error => console.log(error))
@@ -386,7 +417,8 @@ export default {
       console.log(JSON.stringify(data));
       axios.post('usuario/save', data )
         .then(res => {
-          alert('USUARIO CADASTRADO COM SUCESSO');
+          // alert('USUARIO CADASTRADO COM SUCESSO');
+          $('#success_add').click()
           this.atualizar()
         })
         .catch(error => console.log(error))
@@ -397,7 +429,8 @@ export default {
       axios.delete('/carro/deleteById/' + id, 
           { headers: { Accept: 'application/json' } })
         .then(res => {
-          alert('DELETADO COM SUCESSO!');
+          // alert('DELETADO COM SUCESSO!');
+          $('#success_del').click()
           this.atualizar()
           console.log('res');
         })
@@ -409,7 +442,8 @@ export default {
       axios.delete('/usuario/deleteById/' + id,
           { headers: { Accept: 'application/json' } })
         .then(res => {
-          alert('DELETADO COM SUCESSO!');
+          // alert('DELETADO COM SUCESSO!');
+          $('#success_del').click()
           this.atualizar()
           console.log('res');
         })
@@ -421,7 +455,8 @@ export default {
       axios.delete('/reserva/deleteById/' + id,
           { headers: { Accept: 'application/json' } })
         .then(res => {
-          alert('DELETADO COM SUCESSO!');
+          // alert('DELETADO COM SUCESSO!');
+          $('#success_del').click()
           this.atualizar()
           console.log('res');
         })

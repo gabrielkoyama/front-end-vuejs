@@ -48,6 +48,7 @@ export default {
           console.log(res)
           this.setUsuario(res.data)
           this.setToken(res.headers.token)
+          console.log(res.headers.token)
           this.$router.push('/')
         })
         .catch(error => console.log(error))
